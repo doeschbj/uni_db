@@ -1,0 +1,184 @@
+#!/usr/bin/env python
+import rospy
+import sys, os, time
+import math
+from ctypes import *
+from std_msgs.msg import Float64
+from geometry_msgs.msg import Twist
+from std_msgs.msg import Int32MultiArray
+from std_msgs.msg import String
+
+vel_pub = rospy.Publisher('/cmd_vel',Twist,queue_size = 10)
+info_pub = rospy.Publisher('/info',String,queue_size = 2)
+msg = Twist()
+rospy.init_node('talker2', anonymous=True)
+
+rate = rospy.Rate(20)
+count = 0
+pi = math.pi
+yspeed = 0
+zspeed = 0
+xturnspeed = 0
+yturnspeed = 0
+speed = 0.005
+turnspeed = 0
+
+max = 0.09
+
+def f_callback(data):
+	getBlocks(data)
+
+rospy.Subscriber('/dataSensor',Int32MultiArray,f_callback)
+
+def f_main():
+	while True:
+		print("main started")
+		x = str(input("Kommando eingeben: (start/stop/ende/acht/fahren):"))
+		if x == "start":
+			f_publishData("go")
+			rate.sleep()
+		elif x == "stop":
+			f_publishData("stop")
+			rate.sleep()
+		elif x == "acht":
+			f_achtfahren()
+		elif x == "fahren":
+			f_fahren()
+		elif x == "ende":
+			f_publishData("ende")
+			rate.sleep()
+			break
+		else:
+			print("Bitte nur oben genannte Woerter eingeben!")
+
+def getBlocks(data):
+	global count
+	arr = data.data
+	global speed
+	global turnspeed
+	errordis = 0
+	errorturn = 0
+	factor = 0.00018
+	factorturn = 0.007
+	sig = arr[0] # farbe
+	if sig == 2:# rot
+		if count == 10:
+			width = arr[1]			
+			height = arr[2]
+			x = arr[3]
+			if width > 60 :#and height > 55:
+				errordis = 60 - width
+				speed = speed + (errordis * factor)
+
+			if width < 60 :#and height < 55:
+				errordis = 60 - width
+				speed = speed + (errordis * factor)
+
+			if x > 135:
+				errorturn = 130 - x
+				turnspeed = turnspeed + (errorturn * factorturn)
+
+			if x < 125 :
+				errorturn = 130 - x
+				turnspeed = turnspeed + (errorturn * factorturn)
+		elif count < 10:
+			count = count +1
+		elif count > 10:
+			count = 0
+	elif sig == 1: # gelb
+		if count == 20:
+			f_achtfahren()
+		elif count > 10 and count < 21:
+			count = count + 1
+		elif count > 21 or count < 11:
+			count = 11
+	elif sig == 3:#blau
+		if count == 32:
+			sig = 10
+		elif count > 21 and count < 32:
+			count = count +1
+		elif count > 32:
+			count = 0
+	elif sig == 4: #gruen
+	
+	if speed < -max: speed = -max
+	if turnspeed < -max: turnspeed = -max
+	if speed > max: speed = max;
+	if turnspeed > max: turnspeed = max
+	#print(speed)
+	#print(turnspeed)
+	f_publish(speed,turnspeed)
+	rate.sleep()
+
+def f_achtfahren():
+	speed = 0.2
+	f_publish(speed,0)
+	rospy.sleep(3)
+	turnspeed = 1
+	f_publish(speed,turnspeed)
+	rospy.sleep(6)
+	f_publish(speed,0)
+	rospy.sleep(3)
+	f_publish(speed,turnspeed)
+	rospy.sleep(6)
+	f_publish(0,0)
+
+def f_fahren(): 
+	#f_turnRight(angle) rechtsdrehung
+	#f_turnLeft(angle) linksdrehung 
+	#angle legt winkel der drehung fest 
+	#f_drive_cm(way_cm,drive_speed) faehrt cm nach vorne
+	#way_cm anzahl cm die gefahren werden sollen
+	#drive_speed Geschwindigkeit wobei: -0.5 < drive_speed < 0.5 ausser 0
+	f_drive_cm(3,0.3)
+	f_turnLeft(90)
+	f_drive_cm(3,0.3)
+	f_turnLeft(90)
+	f_drive_cm(3,0.3)
+	f_turnLeft(90)
+	f_drive_cm(3,0.3)
+	f_turnLeft(90)
+
+def f_turnRight(angle):
+	turnspeed = -0.5
+	way = (angle * pi * 19)/ 360
+	turntime = way/abs(turnspeed * 10) 
+	f_publish(0,turnspeed)
+	rospy.sleep(turntime)
+	f_publish(0,0)
+
+def f_turnLeft(angle):
+	turnspeed = 0.5
+	way = (angle * pi * 19)/ 360
+	turntime = way/abs(turnspeed * 10) 
+	f_publish(0,turnspeed)
+	rospy.sleep(turntime)
+	f_publish(0,0)
+
+def f_drive_cm(way_cm, drive_speed):
+	if drive_speed > 0.5:
+		drive_speed = 0.5
+	if drive_speed < -0.5:
+		drive_speed = -0.5
+	drive_time = way_cm/abs(drive_speed * 10) 
+	f_publish(drive_speed,0)
+	rospy.sleep(drive_time)
+	f_publish(0,0)
+
+def f_publish(xspeed, zturnspeed):
+	msg.linear.x = xspeed
+	msg.linear.y = yspeed
+	msg.linear.z = zspeed
+	msg.angular.z = zturnspeed
+	msg.angular.y = yturnspeed
+	msg.angular.x = xturnspeed
+	vel_pub.publish(msg)
+
+def f_publishData(data):
+	info_pub.publish(data)
+
+
+
+
+f_main()
+
