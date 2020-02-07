@@ -30,35 +30,39 @@ rospy.Subscriber('/dataSensor',Int32MultiArray,f_callback)
 
 def f_main():
 	global counter
-	while True:
-		global cmd
-		if counter == 100:
-			print("")
-			x = str(input("Kommando eingeben: (start/stop/ende/acht/fahren/steuern/tasten/kugelfind):"))
-			if x == "start":
-				cmd = "start"
-				counter = 0
-				f_publishData("go")
-				rate.sleep()
-			elif x == "stop":
-				f_publishData("stop")
-				rate.sleep()
-			elif x == "acht":
-				f_achtfahren()
-			elif x == "fahren":
-				f_fahren()
-			elif x == "ende":
-				f_publishData("ende")
-				rate.sleep()
-				break
-			elif x == "steuern":
-				f_steuern()
-			elif x == "kugelfind":
-				f_kugel()
-			elif x == "tasten":
-				os.system("roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch")
-			else:
-				print("Bitte nur oben genannte Woerter eingeben!")
+	try:
+		while True:
+			global cmd
+			if counter == 100:
+				print("")
+				x = str(input("Kommando eingeben: (start/stop/ende/acht/fahren/steuern/tasten/kugelfind):"))
+				if x == "start":
+					cmd = "start"
+					counter = 0
+					f_publishData("go")
+					rate.sleep()
+				elif x == "stop":
+					f_publishData("stop")
+					rate.sleep()
+				elif x == "acht":
+					f_achtfahren()
+				elif x == "fahren":
+					f_fahren()
+				elif x == "ende":
+					f_publishData("ende")
+					rate.sleep()
+					break
+				elif x == "steuern":
+					f_steuern()
+				elif x == "kugelfind":
+					f_kugel()
+				elif x == "tasten":
+					os.system("roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch")
+				else:
+					print("Bitte nur oben genannte Woerter eingeben!")
+
+	except KeyboardInterrupt:
+		pass
 
 def f_steuern():
 	while True:
@@ -325,11 +329,16 @@ def f_publish(xspeed, zturnspeed):
 	msg.angular.z = zturnspeed
 	msg.angular.y = yturnspeed
 	msg.angular.x = xturnspeed
-	vel_pub.publish(msg)
+	try:
+		vel_pub.publish(msg)
+	except KeyboardInterrupt:
+		pass
 
 def f_publishData(data):
-	info_pub.publish(data)
-
+	try:
+		info_pub.publish(data)
+	except KeyboardInterrupt:
+		pass
 
 if __name__ == '__main__':
 	try:
