@@ -1,8 +1,8 @@
 router			admin		admin
 turtlelan		turtlebot
-BurgermitCam(piburger3)	piburger	192.168.0.104
-Waffle(burger1)		pi		192.168.0.101
-burger2			piburger	192.168.0.107
+BurgermitCam(piburger3)	piburger	192.168.0.104	robot1
+Waffle(burger1)		pi		192.168.0.101	robot2
+burger2			piburger	192.168.0.107	robot3
 Desktop-PC		piburger	192.168.0.110
 
 
