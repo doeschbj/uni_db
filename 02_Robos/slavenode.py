@@ -1,5 +1,5 @@
 import sys, os, time
-import pixy_api/pixy 
+import pixy 
 import rospy
 import math
 from ctypes import *
