@@ -48,8 +48,8 @@ def f_init():
 	print("Blocks started")
 	pixy.init()
 	print("First Done")
-	#pixy.change_prog("color_connected_components")
-	#print("Initialized")
+	pixy.change_prog("color_connected_components")
+	print("Initialized")
 	
 def f_getBlocks():
 	global run
