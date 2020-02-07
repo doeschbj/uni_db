@@ -12,7 +12,7 @@ from threading import Thread
 
 data_pub = rospy.Publisher('/dataSensor',Int32MultiArray,queue_size = 10)
 speed_pub = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
-rospy.init_node('robot1/talker', anonymous=True)
+rospy.init_node('robot1talker', anonymous=True)
 msg = Twist()
 rate = rospy.Rate(60) # 20hz
 yspeed = 0

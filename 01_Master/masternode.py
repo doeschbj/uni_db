@@ -11,7 +11,7 @@ from std_msgs.msg import String
 vel_pub = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
 info_pub = rospy.Publisher('/info',String,queue_size = 2)
 msg = Twist()
-rospy.init_node('master/talker', anonymous=True)
+rospy.init_node('mastertalker', anonymous=True)
 
 rate = rospy.Rate(80)
 count = 0
