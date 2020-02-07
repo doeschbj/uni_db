@@ -37,6 +37,7 @@ def f_callback(data):
 	elif data.data =="ende":
 		f_stop()
 		run = 0
+
 rospy.Subscriber('/info',String,f_callback)		
 
 
@@ -48,9 +49,9 @@ def f_init():
 	print("Blocks started")
 	pixy.init()
 	print("First Done")
-	pixy.change_prog("color_connected_components")
-	print("Initialized")
-
+	#pixy.change_prog("color_connected_components")
+	#print("Initialized")
+	
 def f_getBlocks():
 	global run
 	class Blocks (Structure):
