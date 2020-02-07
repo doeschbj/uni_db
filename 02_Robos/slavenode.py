@@ -7,8 +7,8 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32MultiArray
 from threading import Thread
-
-from pixy_api import pixy
+import pixy
+#from pixy_api import pixy
 
 data_pub = rospy.Publisher('/dataSensor',Int32MultiArray,queue_size = 10)
 speed_pub = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)

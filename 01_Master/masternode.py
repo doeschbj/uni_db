@@ -331,7 +331,10 @@ def f_publishData(data):
 	info_pub.publish(data)
 
 
+if __name__ == '__main__':
+	try:
+		f_main()
+	except rospy.ROSInterruptException:
+		pass
 
-
-f_main()
 
