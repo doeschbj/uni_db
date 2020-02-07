@@ -1,6 +1,7 @@
 import sys, os, time
 import rospy
 import math
+sys.path.insert(0, '~/catkin_ws/src/uni_db/02_Robos/pixy_api/')
 from ctypes import *
 from std_msgs.msg import Float64
 from std_msgs.msg import String
