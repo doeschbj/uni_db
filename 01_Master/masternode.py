@@ -88,6 +88,7 @@ def f_kugel():
 	cmd = "startkugel"
 	f_publishData("go")
 	rate.sleep()
+
 yspeed = 0
 zspeed = 0
 xturnspeed = 0
@@ -100,7 +101,7 @@ mission2 = 0
 mission3 = 0
 maxi = 0.09
 maxturn = 0.3
-
+#########################################################
 def f_kugel_find(data):
 	global mission1
 	global mission2 
@@ -181,7 +182,7 @@ def f_drive_ball(data,sign):
 		return	
 	if speed < -maxi: speed = -maxi
 	if turnspeed < -maxturn: turnspeed = -maxturn
-	if speed > maxi: speed = maxi;
+	if speed > maxi: speed = maxi
 	if turnspeed > maxturn: turnspeed = maxturn
 	f_publish(speed,turnspeed)
 	rate.sleep()
@@ -244,12 +245,13 @@ def getBlocks(data):
 			count = 0
 ########### Teilblock falls gelb erkannt wird
 	elif sig == 1: # gelb
-		f_achtfahren()
+		f_publish(0,0)
+		#f_achtfahren()
 		rate.sleep()
 
 ########### Teilblock falls gruen erkannt wird
 	elif sig == 4:#gruen
-		
+		f_publish(2,2)
 		rate.sleep()
 ########### Teilblock falls blau erkannt wird
 	elif sig == 3: #blau
