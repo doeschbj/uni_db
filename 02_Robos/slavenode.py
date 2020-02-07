@@ -1,14 +1,13 @@
 import sys, os, time
 import rospy
 import math
-sys.path.insert(0, '~/catkin_ws/src/uni_db/02_Robos/pixy_api/')
 from ctypes import *
 from std_msgs.msg import Float64
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32MultiArray
 from threading import Thread
-from pixy_api import pixy
+import pixy
 from pixy import *
 
 data_pub = rospy.Publisher('/dataSensor',Int32MultiArray,queue_size = 10)
