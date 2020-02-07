@@ -1,4 +1,5 @@
 import sys, os, time
+sys.path.insert(0, "~/catkin_ws/src/uni_db/02_Robos/pixy_api/")
 import rospy
 import math
 from ctypes import *
@@ -7,8 +8,8 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32MultiArray
 from threading import Thread
-import pixy
-from pixy import *
+from pixy_api import pixy
+from pixy_api.pixy import *
 
 data_pub = rospy.Publisher('/dataSensor',Int32MultiArray,queue_size = 10)
 speed_pub = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
