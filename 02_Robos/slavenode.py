@@ -13,7 +13,7 @@ from pixy_api import pixy
 
 data_pub = rospy.Publisher('/dataSensor',Int32MultiArray,queue_size = 10)
 speed_pub = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
-rospy.Subscriber('/info',String,f_callback)
+
 rospy.init_node('robot1talker', anonymous=True)
 msg = Twist()
 rate = rospy.Rate(60) # 20hz
@@ -37,7 +37,7 @@ def f_callback(data):
 	elif data.data =="ende":
 		f_stop()
 		run = 0
-		
+rospy.Subscriber('/info',String,f_callback)		
 
 
 def f_main():
