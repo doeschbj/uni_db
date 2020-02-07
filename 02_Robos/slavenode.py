@@ -1,5 +1,4 @@
 import sys, os, time
-sys.path.insert(0,'~/catkin_ws/src/uni_db/02_Robos/pixy_api/')
 import rospy
 import math
 from ctypes import *
