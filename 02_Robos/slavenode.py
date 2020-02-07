@@ -1,14 +1,16 @@
+
 import sys, os, time
-import pixy_api/pixy 
+sys.path.insert(0,'~/catkin_ws/src/uni_db/02_Robos/pixy_api/')
 import rospy
 import math
 from ctypes import *
-from pixy import *
 from std_msgs.msg import Float64
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32MultiArray
 from threading import Thread
+
+from pixy_api import pixy
 
 data_pub = rospy.Publisher('/dataSensor',Int32MultiArray,queue_size = 10)
 speed_pub = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
@@ -44,8 +46,9 @@ def f_main():
 
 def f_init():
 	print("Blocks started")
-	pixy.init ()
-	pixy.change_prog ("color_connected_components")
+	pixy.init()
+	pixy.change_prog("color_connected_components")
+	print("Initialized")
 
 def f_getBlocks():
 	global run
