@@ -46,9 +46,8 @@ def f_main():
 
 def f_init():
 	print("Blocks started")
-	pixy.init()
-	print("First Done")
-	pixy.change_prog("color_connected_components")
+	pixy.init ()
+	pixy.change_prog ("color_connected_components");
 	print("Initialized")
 	
 def f_getBlocks():
