@@ -8,10 +8,10 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32MultiArray
 from std_msgs.msg import String
 
-vel_pub = rospy.Publisher('/cmd_vel',Twist,queue_size = 10)
+vel_pub = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
 info_pub = rospy.Publisher('/info',String,queue_size = 2)
 msg = Twist()
-rospy.init_node('talker2', anonymous=True)
+rospy.init_node('master/talker', anonymous=True)
 
 rate = rospy.Rate(80)
 count = 0
@@ -234,7 +234,7 @@ def getBlocks(data):
 				turnspeed = 0
 			if speed < -maxi: speed = -maxi
 			if turnspeed < -maxturn: turnspeed = -maxturn
-			if speed > maxi: speed = maxi;
+			if speed > maxi: speed = maxi
 			if turnspeed > maxturn: turnspeed = maxturn
 			f_publish(speed,turnspeed)
 			rate.sleep()
@@ -249,10 +249,9 @@ def getBlocks(data):
 
 ########### Teilblock falls gruen erkannt wird
 	elif sig == 4:#gruen
-		f_turnRight(450)
-		f_drive_cm (10,-0.2)
+		
 		rate.sleep()
-########### Teilblock falls gruen erkannt wird
+########### Teilblock falls blau erkannt wird
 	elif sig == 3: #blau
 		rate.sleep()
 ###########
