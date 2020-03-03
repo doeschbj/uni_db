@@ -10,6 +10,7 @@ def callback(msg):
 	print msg.ranges[179]
 	print ("Values at 360 Grad")
 	print msg.ranges[359]
+	print("--------------------")
 
 rospy.init_node('scan_values')
 sub = rospy.Subscriber('/robot1/scan',LaserScan,callback)
