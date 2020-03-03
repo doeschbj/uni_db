@@ -8,8 +8,8 @@ def callback(msg):
 	print msg.ranges[89]
 	print ("Values at 180 Grad")
 	print msg.ranges[179]
-	print ("Values at 360 Grad")
-	print msg.ranges[359]
+	print ("Values at 270 Grad")
+	print msg.ranges[269]
 	print("--------------------")
 
 rospy.init_node('scan_values')
