@@ -8,7 +8,8 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32MultiArray
 from std_msgs.msg import String
 
-vel_pub = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
+vel_pub3 = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
+vel_pub1 = rospy.Publisher('/robot1/cmd_vel',Twist,queue_size = 10)
 info_pub = rospy.Publisher('/info',String,queue_size = 2)
 msg = Twist()
 rospy.init_node('mastertalker', anonymous=True)
@@ -35,7 +36,7 @@ def f_main():
 			global cmd
 			if counter == 100:
 				print("")
-				x = str(input("Kommando eingeben: (start/stop/ende/acht/fahren/steuern/tasten/kugelfind):"))
+				x = str(raw_input("Kommando eingeben: (start/stop/ende/acht/fahren/steuern/tasten/kugelfind):"))
 				if x == "start":
 					cmd = "start"
 					counter = 0
@@ -45,9 +46,9 @@ def f_main():
 					f_publishData("stop")
 					rate.sleep()
 				elif x == "acht":
-					f_achtfahren()
+					f_achtfahren(1)
 				elif x == "fahren":
-					f_fahren()
+					f_fahren(1)
 				elif x == "ende":
 					f_publishData("ende")
 					rate.sleep()
@@ -63,6 +64,8 @@ def f_main():
 
 	except KeyboardInterrupt:
 		pass
+	except:
+		pass
 
 def f_steuern():
 	while True:
@@ -70,16 +73,16 @@ def f_steuern():
 		if x == "gerade":
 			x = int(input("Wieviel cm soll gefahren werden? (-200 bis 200):"))
 			if x < 201 and x > -201:
-				f_drive_cm(x,0.2)
+				f_drive_cm(x,0.2,1)
 			else:
 				print("Bitte nur oben genannte Woerter eingeben!")
 		elif x == "drehen":
 			x = int(input("Winkel angeben. (-360 bis 360 Grad):"))
 			if x < 361 and x > -361:
 				if x > -1:
-					f_turnLeft(x)
+					f_turnLeft(x,1)
 				elif x < 0:
-					f_turnRight(x * -1)
+					f_turnRight(x * -1,1)
 			else:
 				print("Bitte nur oben genannte Woerter eingeben!")
 		elif x == "ende":
@@ -103,9 +106,172 @@ turnspeed = 0
 mission1 = 0
 mission2 = 0
 mission3 = 0
-maxi = 0.09
-maxturn = 0.3
+maxi = 0.2
+maxturn = 0.9
 #########################################################
+
+####################################################################################################
+def getBlocks(data):
+	global counter
+	global count
+	global speed
+	global maxi
+	global maxturn
+	global turnspeed
+	
+	arr = data.data
+	errordis = 0
+	errorturn = 0
+	factor = 0.000005#0.0000018
+	factorturn = 0.09#0.03
+	sig = arr[0] # farbe
+
+	if counter < 100 and arr[0] > 0:
+		print("Farbe: " + str(arr[0])+"")
+		print("Position:  x: "+ str(arr[3]) + "  y: "+ str(arr[4]))
+		print("Breite: "+str(arr[1])+" Hoehe: "+str(arr[2]))		
+		counter = counter + 1
+
+########### Teilblock falls rot erkannt wird
+	if sig == 2:# rot
+		if count == 10:
+			width = arr[1]			
+			height = arr[2]
+			acam = width * height #flaeche die erkannt wird
+			x = arr[3]
+			if acam > 5000 :
+				errordis = 5000 - acam
+				speed = speed + (errordis * factor)
+
+			elif acam < 3700 :
+				errordis = 3700 - acam
+				speed = speed + (errordis * factor)
+			else:
+				speed = 0
+			if x > 160:
+				errorturn = 160 - x
+				turnspeed = turnspeed + (errorturn * factorturn)
+
+			elif x < 100 :
+				errorturn = 100 - x
+				turnspeed = turnspeed + (errorturn * factorturn)
+			else: 
+				turnspeed = 0
+			if speed < -maxi: speed = -maxi
+			if turnspeed < -maxturn: turnspeed = -maxturn
+			if speed > maxi: speed = maxi
+			if turnspeed > maxturn: turnspeed = maxturn
+			f_publish(speed,turnspeed,1)
+			rate.sleep()
+		elif count < 10:
+			count = count +1
+		elif count > 10:
+			count = 0
+########### Teilblock falls gelb erkannt wird
+	elif sig == 1: # gelb
+		#f_publish(0,0,1)
+		#f_achtfahren(1)
+		rate.sleep()
+
+########### Teilblock falls gruen erkannt wird
+	elif sig == 4:#gruen
+		#f_publish(2,2,1)
+		rate.sleep()
+########### Teilblock falls blau erkannt wird
+	elif sig == 3: #blau
+		rate.sleep()
+###########
+	elif sig == 0:
+		f_publish(0,0,1)
+		rate.sleep()
+
+def f_fahren(roboter): 
+	#f_turnRight(angle) rechtsdrehung
+	#f_turnLeft(angle) linksdrehung 
+	#angle legt winkel der drehung fest 
+	#f_drive_cm(way_cm,drive_speed) faehrt cm nach vorne
+	#way_cm anzahl cm die gefahren werden sollen
+	#drive_speed Geschwindigkeit wobei: -0.5 < drive_speed < 0.5 ausser 0
+	f_drive_cm(30,0.3,roboter)
+	f_turnLeft(90,roboter)
+	f_drive_cm(30,0.3,roboter)
+	f_turnLeft(90,roboter)
+	f_drive_cm(30,0.3,roboter)
+	f_turnLeft(90,roboter)
+	f_drive_cm(30,0.3,roboter)
+	f_turnLeft(90,roboter)
+
+
+######################################################################################################
+def f_achtfahren(roboter):
+	speed = 0.2
+	f_publish(speed,0,roboter)
+	rospy.sleep(1.5)
+	turnspeed = 1.4
+	f_publish(speed,turnspeed,roboter)
+	rospy.sleep(5.5)
+	f_publish(speed,0,1)
+	rospy.sleep(3)
+	f_publish(speed,-turnspeed,roboter)
+	rospy.sleep(5.5)
+	f_publish(speed,0,roboter)
+	rospy.sleep(1.5)
+	f_publish(0,0,roboter)
+
+def f_turnRight(angle,roboter):
+	turnspeed = -0.5
+	way = (angle * pi * 19)/ 360
+	turntime = way/abs(turnspeed * 10) 
+	f_publish(0,turnspeed,1)
+	rospy.sleep(turntime)
+	f_publish(0,0,roboter)
+
+def f_turnLeft(angle,roboter):
+	turnspeed = 0.5
+	way = (angle * pi * 19)/ 360
+	turntime = way/abs(turnspeed * 10) 
+	f_publish(0,turnspeed,1)
+	rospy.sleep(turntime)
+	f_publish(0,0,roboter)
+
+def f_drive_cm(way_cm, drive_speed,roboter):
+	if drive_speed > 0.5:
+		drive_speed = 0.5
+	if drive_speed < -0.5:
+		drive_speed = -0.5
+	drive_time = way_cm/abs(drive_speed * 100) 
+	f_publish(drive_speed,0,1)
+	rospy.sleep(drive_time)
+	f_publish(0,0,roboter)
+
+#Geschwindigkeitspublisher fuer Robot 1 bis 3
+def f_publish(xspeed, zturnspeed,roboter):
+	msg.linear.x = xspeed
+	msg.linear.y = yspeed
+	msg.linear.z = zspeed
+	msg.angular.z = zturnspeed
+	msg.angular.y = yturnspeed
+	msg.angular.x = xturnspeed
+	try:
+		if roboter== 1:
+			vel_pub1.publish(msg)
+		elif roboter==2:
+			pass#wird noch nicht benoetigt
+		elif roboter==3:
+			vel_pub3.publish(msg)
+	except KeyboardInterrupt:
+		pass
+
+
+def f_publishData(data):
+	try:
+		info_pub.publish(data)
+	except KeyboardInterrupt:
+		pass
+###################################################
+#############  nicht mehr benoetigt ###############
+###################################################
+
 def f_kugel_find(data):
 	global mission1
 	global mission2 
@@ -114,20 +280,20 @@ def f_kugel_find(data):
 	sig = arr[0] 
 	if mission1 == 0:#rote kugel finden und hinfahren
 		if sig != 2:
-			f_publish(0,0.5)
+			f_publish(0,0.5,1)
 			rate.sleep()
 		else:
 			f_drive_ball(data,2)
 
 	elif mission2 == 0:#blaue kugel finden
 		if sig != 3:
-			f_publish(0,0.5)
+			f_publish(0,0.5,1)
 			rate.sleep()
 		else:
 			f_drive_ball(data,3)
 	elif mission3 == 0:# gruene kugel
 		if sig != 4:
-			f_publish(0,0.5)
+			f_publish(0,0.5,1)
 			rate.sleep()
 		else:
 			f_drive_ball(data,4)
@@ -188,157 +354,11 @@ def f_drive_ball(data,sign):
 	if turnspeed < -maxturn: turnspeed = -maxturn
 	if speed > maxi: speed = maxi
 	if turnspeed > maxturn: turnspeed = maxturn
-	f_publish(speed,turnspeed)
+	f_publish(speed,turnspeed,1)
 	rate.sleep()
-####################################################################################################
-def getBlocks(data):
-	global counter
-	global count
-	global speed
-	global maxi
-	global maxturn
-	global turnspeed
-	
-	arr = data.data
-	errordis = 0
-	errorturn = 0
-	factor = 0.0000018
-	factorturn = 0.03
-	sig = arr[0] # farbe
 
-	if counter < 100 and arr[0] > 0:
-		print("Farbe: " + str(arr[0])+"")
-		print("Position:  x: "+ str(arr[3]) + "  y: "+ str(arr[4]))
-		print("Breite: "+str(arr[1])+" Hoehe: "+str(arr[2]))		
-		counter = counter + 1
+###############################################################################
 
-########### Teilblock falls rot erkannt wird
-	if sig == 2:# rot
-		if count == 10:
-			width = arr[1]			
-			height = arr[2]
-			acam = width * height #flaeche die erkannt wird
-			x = arr[3]
-			if acam > 5000 :
-				errordis = 5000 - acam
-				speed = speed + (errordis * factor)
-
-			elif acam < 3700 :
-				errordis = 3700 - acam
-				speed = speed + (errordis * factor)
-			else:
-				speed = 0
-			if x > 160:
-				errorturn = 160 - x
-				turnspeed = turnspeed + (errorturn * factorturn)
-
-			elif x < 100 :
-				errorturn = 100 - x
-				turnspeed = turnspeed + (errorturn * factorturn)
-			else: 
-				turnspeed = 0
-			if speed < -maxi: speed = -maxi
-			if turnspeed < -maxturn: turnspeed = -maxturn
-			if speed > maxi: speed = maxi
-			if turnspeed > maxturn: turnspeed = maxturn
-			f_publish(speed,turnspeed)
-			rate.sleep()
-		elif count < 10:
-			count = count +1
-		elif count > 10:
-			count = 0
-########### Teilblock falls gelb erkannt wird
-	elif sig == 1: # gelb
-		f_publish(0,0)
-		#f_achtfahren()
-		rate.sleep()
-
-########### Teilblock falls gruen erkannt wird
-	elif sig == 4:#gruen
-		f_publish(2,2)
-		rate.sleep()
-########### Teilblock falls blau erkannt wird
-	elif sig == 3: #blau
-		rate.sleep()
-###########
-	elif sig == 0:
-		f_publish(0,0)
-		rate.sleep()
-
-def f_fahren(): 
-	#f_turnRight(angle) rechtsdrehung
-	#f_turnLeft(angle) linksdrehung 
-	#angle legt winkel der drehung fest 
-	#f_drive_cm(way_cm,drive_speed) faehrt cm nach vorne
-	#way_cm anzahl cm die gefahren werden sollen
-	#drive_speed Geschwindigkeit wobei: -0.5 < drive_speed < 0.5 ausser 0
-	f_drive_cm(30,0.3)
-	f_turnLeft(90)
-	f_drive_cm(30,0.3)
-	f_turnLeft(90)
-	f_drive_cm(30,0.3)
-	f_turnLeft(90)
-	f_drive_cm(30,0.3)
-	f_turnLeft(90)
-######################################################################################################
-def f_achtfahren():
-	speed = 0.2
-	f_publish(speed,0)
-	rospy.sleep(1.5)
-	turnspeed = 1.4
-	f_publish(speed,turnspeed)
-	rospy.sleep(5.5)
-	f_publish(speed,0)
-	rospy.sleep(3)
-	f_publish(speed,-turnspeed)
-	rospy.sleep(5.5)
-	f_publish(speed,0)
-	rospy.sleep(1.5)
-	f_publish(0,0)
-
-def f_turnRight(angle):
-	turnspeed = -0.5
-	way = (angle * pi * 19)/ 360
-	turntime = way/abs(turnspeed * 10) 
-	f_publish(0,turnspeed)
-	rospy.sleep(turntime)
-	f_publish(0,0)
-
-def f_turnLeft(angle):
-	turnspeed = 0.5
-	way = (angle * pi * 19)/ 360
-	turntime = way/abs(turnspeed * 10) 
-	f_publish(0,turnspeed)
-	rospy.sleep(turntime)
-	f_publish(0,0)
-
-def f_drive_cm(way_cm, drive_speed):
-	if drive_speed > 0.5:
-		drive_speed = 0.5
-	if drive_speed < -0.5:
-		drive_speed = -0.5
-	drive_time = way_cm/abs(drive_speed * 100) 
-	f_publish(drive_speed,0)
-	rospy.sleep(drive_time)
-	f_publish(0,0)
-
-def f_publish(xspeed, zturnspeed):
-	msg.linear.x = xspeed
-	msg.linear.y = yspeed
-	msg.linear.z = zspeed
-	msg.angular.z = zturnspeed
-	msg.angular.y = yturnspeed
-	msg.angular.x = xturnspeed
-	try:
-		vel_pub.publish(msg)
-	except KeyboardInterrupt:
-		pass
-
-def f_publishData(data):
-	try:
-		info_pub.publish(data)
-	except KeyboardInterrupt:
-		pass
 
 if __name__ == '__main__':
 	try:

@@ -16,13 +16,12 @@ speed_pub = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
 
 rospy.init_node('robot1talker', anonymous=True)
 msg = Twist()
-rate = rospy.Rate(60) # 20hz
+rate = rospy.Rate(60) # 20hzgle_lamp()
 yspeed = 0
 zspeed = 0
 xturnspeed = 0
 yturnspeed = 0
 run = 0
-
 def f_callback(data):
 	global run
 	print data.data
@@ -89,7 +88,10 @@ def f_getBlocks():
 def f_stop():
 	f_publishSpeed(0,0)
 	rate.sleep()
+def toggle_lampon(){
+	pixy.toggle_lamp()
 
+}
 def f_publish(data):
 	data_pub.publish(data)
 
