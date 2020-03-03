@@ -49,7 +49,8 @@ def f_main():
 def f_init():
 	print("Blocks started")
 	pixy.init ()
-	pixy.change_prog ("color_connected_components");
+	pixy.change_prog ("color_connected_components")
+	
 	print("Initialized")
 	
 def f_getBlocks():
@@ -91,7 +92,8 @@ def f_stop():
 	f_publishSpeed(0,0)
 	rate.sleep()
 def toggle_lampon():
-	pixy.toggle_lamp()
+	#pixy.toggle_lamp()  nachschauen wie es heißt
+	pass
 
 def f_publish(data):
 	data_pub.publish(data)

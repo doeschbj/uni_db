@@ -1,0 +1,15 @@
+# Kamera für Bildübertragung beim fahren
+	Turtlebot
+		roslaunch turtlebot3_bringup turtlebot3_rpi_camerea.launch
+	Remote Desktop		
+		rqt_image_view
+#Pixy cam starten und anderem turtlebot hinterherfahren
+	Turtlebot
+		roslaunch bringup.launch
+		python slavenode.py
+	remote Desktop
+		python masternode.py
+		roscore
+		roslaunch turtlebot3_teleop
+
+
