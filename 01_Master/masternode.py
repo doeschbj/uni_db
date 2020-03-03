@@ -36,7 +36,7 @@ def f_main():
 			global cmd
 			if counter == 100:
 				print("")
-				x = str(raw_input("Kommando eingeben: (start/stop/ende/acht/fahren/steuern/tasten/kugelfind):"))
+				x = str(raw_input("Kommando eingeben: (start/stop/ende/acht/fahren/steuern/tasten/kugelfind/lamp):"))
 				if x == "start":
 					cmd = "start"
 					counter = 0
@@ -59,6 +59,8 @@ def f_main():
 					f_kugel()
 				elif x == "tasten":
 					os.system("roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch")
+				elif x == "lamp":
+					f_publishData("lamp")
 				else:
 					print("Bitte nur oben genannte Woerter eingeben!")
 
