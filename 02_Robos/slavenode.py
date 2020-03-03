@@ -92,7 +92,7 @@ def f_stop():
 	f_publishSpeed(0,0)
 	rate.sleep()
 def toggle_lampon():
-	#pixy.toggle_lamp()  nachschauen wie es heißt
+	#pixy.toggle_lamp()  nachschauen wie es heisst
 	pass
 
 def f_publish(data):
