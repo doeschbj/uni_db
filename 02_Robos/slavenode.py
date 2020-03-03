@@ -33,6 +33,8 @@ def f_callback(data):
 	elif data.data =="stop":
 		f_stop()
 		run = 0
+	elif data.data == "lamp":
+		toggle_lampon()
 	elif data.data =="ende":
 		f_stop()
 		run = 0
@@ -88,10 +90,9 @@ def f_getBlocks():
 def f_stop():
 	f_publishSpeed(0,0)
 	rate.sleep()
-def toggle_lampon(){
+def toggle_lampon():
 	pixy.toggle_lamp()
 
-}
 def f_publish(data):
 	data_pub.publish(data)
 
