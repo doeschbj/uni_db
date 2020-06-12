@@ -1,18 +1,28 @@
 import rospy
+import turtle
+import math
 from sensor_msgs.msg import LaserScan
+t = turtle.Pen()
 
 def callback(msg):
-	print ("Values at 0 Grad")
-	print msg.ranges[0]
-	print ("Values at 90 Grad")
-	print msg.ranges[89]
-	print ("Values at 180 Grad")
-	print msg.ranges[179]
-	print ("Values at 270 Grad")
-	print msg.ranges[269]
-	print("--------------------")
+	global t
+	for i in range(360):
+		x = (math.sin(i) * msg.ranges[i]) * 120.0
+		y = (math.cos(i) * msg.ranges[i]) * 120.0
+		t.goto(x,y)
+		t.down()
+		t.circle(2)
+		t.up()
+		
+def main():
+	global t
+	t.ht()
+	t.speed(0)
+	t.tracer(8, 0)
+	t.up()
+	rospy.init_node('scan_values')
+	sub = rospy.Subscriber('/robot3/scan',LaserScan,callback)
+	rospy.spin()
 
-rospy.init_node('scan_values')
-sub = rospy.Subscriber('/robot3/scan',LaserScan,callback)
-rospy.spin() 
-#180 grad sind straight nach vorne
+if __name__ == '__main__':
+	main()
