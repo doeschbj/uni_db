@@ -6,6 +6,7 @@ t = turtle.Pen()
 
 def callback(msg):
 	global t
+	t.clear()
 	for i in range(360):
 		x = (math.sin(i) * msg.ranges[i]) * 120.0
 		y = (math.cos(i) * msg.ranges[i]) * 120.0
@@ -13,12 +14,14 @@ def callback(msg):
 		t.down()
 		t.circle(2)
 		t.up()
-		
+		t.goto(0.0)
+
 def main():
 	global t
 	t.ht()
 	t.speed(0)
 	t.tracer(8, 0)
+	t.cricle(10)
 	t.up()
 	rospy.init_node('scan_values')
 	sub = rospy.Subscriber('/robot3/scan',LaserScan,callback)
