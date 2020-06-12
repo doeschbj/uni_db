@@ -13,5 +13,6 @@ def callback(msg):
 	print("--------------------")
 
 rospy.init_node('scan_values')
-sub = rospy.Subscriber('/robot1/scan',LaserScan,callback)
+sub = rospy.Subscriber('/robot3/scan',LaserScan,callback)
 rospy.spin() 
+#180 grad sind straight nach vorne
