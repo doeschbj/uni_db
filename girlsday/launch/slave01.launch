@@ -1,0 +1,8 @@
+<launch>
+  <include file="$(turtlebot3_bringup)/launch/robot.launch">
+
+  </include>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+  <include file="$(find kuka_kr6_support_moveit)/launch/planning_context.launch">
+  </include>
+</launch>
