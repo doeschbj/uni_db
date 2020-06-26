@@ -1,5 +1,5 @@
 <launch>
-  <arg name="robot" default="robot1">
+  <arg name="robot" default="robot1"/>
   <!-- No namespace here as we will share this description.
        Access with slash at the beginning -->
   <param name="robot_description"
@@ -8,7 +8,7 @@
   <!-- BEGIN ROBOT 1-->
   <group ns="$(arg robot)">
     <param name="tf_prefix" value="$(arg robot)_tf" />
-    <include file="$(find turtlebot3_bringup)/launch/turtlebot3_robot.launch" >
+    <include file="$(find turtlebot3_bringup)/launch/turtlebot3_robot.launch">
     </include>
   </group>
 </launch>
