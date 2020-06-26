@@ -12,4 +12,6 @@
 		roscore
 		roslaunch turtlebot3_teleop
 
+robot1 wird immer von teleopkey angesprochen
+
 
