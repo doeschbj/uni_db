@@ -14,7 +14,7 @@ from pixy_api.pixy import *
 data_pub = rospy.Publisher('/dataSensor',Int32MultiArray,queue_size = 10)
 speed_pub = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
 
-rospy.init_node('robot1talker', anonymous=True)
+rospy.init_node('robottalker', anonymous=True)
 msg = Twist()
 rate = rospy.Rate(60) # 20hzgle_lamp()
 yspeed = 0
@@ -25,7 +25,7 @@ run = 0
 def f_callback(data):
 	global run
 	print data.data
-	thread = Thread(target=f_getBlocks)	
+	thread = Thread(target=f_getBlocks)
 	thread.daemon = True
 	if data.data =="go":
 		run = 1
@@ -39,7 +39,7 @@ def f_callback(data):
 		f_stop()
 		run = 0
 
-rospy.Subscriber('/info',String,f_callback)		
+rospy.Subscriber('/info',String,f_callback)
 
 
 def f_main():
@@ -50,9 +50,9 @@ def f_init():
 	print("Blocks started")
 	pixy.init ()
 	pixy.change_prog ("color_connected_components")
-	
+
 	print("Initialized")
-	
+
 def f_getBlocks():
 	global run
 	class Blocks (Structure):
@@ -65,7 +65,7 @@ def f_getBlocks():
 		("m_index", c_uint),
 		("m_age", c_uint) ]
 	blocks = BlockArray(100)
-	while run == 1:	
+	while run == 1:
 		count = pixy.ccc_get_blocks (100, blocks)
 		if count > 0:
 			arr = []
@@ -78,12 +78,12 @@ def f_getBlocks():
 			print(str(arr[0]) + " erkannt")
 			f_publish(arr_pub)
 			rate.sleep()
-		else:	
+		else:
 			arr = []
 			arr.append(0)
 			arr_pub = Int32MultiArray(data=arr)
 			f_publish(arr_pub)
-			rate.sleep()	
+			rate.sleep()
 			print("Nichts erkannt")
 	print("ende")
 
@@ -112,4 +112,3 @@ if __name__ == '__main__':
 		f_main()
 	except rospy.ROSInterruptException:
 		pass
-
