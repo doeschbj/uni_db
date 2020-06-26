@@ -5,7 +5,7 @@
   <include file="$(find girlsday)/launch/robot.launch">
     <arg name="robot" value="$(arg robot)"/>
   </include>
-  <node pkg="girlsday" name="robottalker" type="slavenode.py" output="screen">
+  <node pkg="girlsday" name="robottalker" type="02_Robos/slavenode.py" output="screen">
 
   </node>
 </launch>
