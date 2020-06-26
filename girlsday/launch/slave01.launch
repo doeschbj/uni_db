@@ -2,7 +2,7 @@
   <!--Prefix mit dem der turtlebot gelaunched wird zur steurung mehrerer Turtlebots hilfreich -->
   <arg name="robot" default="robot1"/>
 
-  <include file="$(find turtlebot3_bringup)/launch/robot.launch">
+  <include file="$(find girlsday)/launch/robot.launch">
     <arg name="robot" value="$(arg robot)"/>
   </include>
   <node pkg="girlsday" name="robottalker" type="02_Robos/slavenode.py" output="screen">
