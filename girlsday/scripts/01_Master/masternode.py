@@ -13,7 +13,7 @@ vel_pub1 = rospy.Publisher('/robot1/cmd_vel',Twist,queue_size = 10)
 info_pub = rospy.Publisher('/info',String,queue_size = 2)
 msg = Twist()
 rospy.init_node('mastertalker', anonymous=True)
-
+robot_inuse = 1
 rate = rospy.Rate(80)
 count = 0
 pi = math.pi
@@ -46,9 +46,9 @@ def f_main():
 					f_publishData("stop")
 					rate.sleep()
 				elif x == "acht":
-					f_achtfahren(1)
+					f_achtfahren(robot_inuse)
 				elif x == "fahren":
-					f_fahren(1)
+					f_fahren(robot_inuse)
 				elif x == "ende":
 					f_publishData("ende")
 					rate.sleep()
@@ -75,16 +75,16 @@ def f_steuern():
 		if x == "gerade":
 			x = int(input("Wieviel cm soll gefahren werden? (-200 bis 200):"))
 			if x < 201 and x > -201:
-				f_drive_cm(x,0.2,1)
+				f_drive_cm(x,0.2,robot_inuse)
 			else:
 				print("Bitte nur oben genannte Woerter eingeben!")
 		elif x == "drehen":
 			x = int(input("Winkel angeben. (-360 bis 360 Grad):"))
 			if x < 361 and x > -361:
 				if x > -1:
-					f_turnLeft(x,1)
+					f_turnLeft(x,robot_inuse)
 				elif x < 0:
-					f_turnRight(x * -1,1)
+					f_turnRight(x * -1,robot_inuse)
 			else:
 				print("Bitte nur oben genannte Woerter eingeben!")
 		elif x == "ende":
@@ -120,7 +120,7 @@ def getBlocks(data):
 	global maxi
 	global maxturn
 	global turnspeed
-	
+
 	arr = data.data
 	errordis = 0
 	errorturn = 0
@@ -131,13 +131,13 @@ def getBlocks(data):
 	if counter < 100 and arr[0] > 0:
 		print("Farbe: " + str(arr[0])+"")
 		print("Position:  x: "+ str(arr[3]) + "  y: "+ str(arr[4]))
-		print("Breite: "+str(arr[1])+" Hoehe: "+str(arr[2]))		
+		print("Breite: "+str(arr[1])+" Hoehe: "+str(arr[2]))
 		counter = counter + 1
 
 ########### Teilblock falls rot erkannt wird
 	if sig == 2:# rot
 		if count == 10:
-			width = arr[1]			
+			width = arr[1]
 			height = arr[2]
 			acam = width * height #flaeche die erkannt wird
 			x = arr[3]
@@ -157,7 +157,7 @@ def getBlocks(data):
 			elif x < 100 :
 				errorturn = 100 - x
 				turnspeed = turnspeed + (errorturn * factorturn)
-			else: 
+			else:
 				turnspeed = 0
 			if speed < -maxi: speed = -maxi
 			if turnspeed < -maxturn: turnspeed = -maxturn
@@ -184,13 +184,13 @@ def getBlocks(data):
 		rate.sleep()
 ###########
 	elif sig == 0:
-		f_publish(0,0,1)
+		f_publish(0,0,robot_inuse)
 		rate.sleep()
 
-def f_fahren(roboter): 
+def f_fahren(roboter):
 	#f_turnRight(angle) rechtsdrehung
-	#f_turnLeft(angle) linksdrehung 
-	#angle legt winkel der drehung fest 
+	#f_turnLeft(angle) linksdrehung
+	#angle legt winkel der drehung fest
 	#f_drive_cm(way_cm,drive_speed) faehrt cm nach vorne
 	#way_cm anzahl cm die gefahren werden sollen
 	#drive_speed Geschwindigkeit wobei: -0.5 < drive_speed < 0.5 ausser 0
@@ -212,7 +212,7 @@ def f_achtfahren(roboter):
 	turnspeed = 1.4
 	f_publish(speed,turnspeed,roboter)
 	rospy.sleep(5.5)
-	f_publish(speed,0,1)
+	f_publish(speed,0,roboter)
 	rospy.sleep(3)
 	f_publish(speed,-turnspeed,roboter)
 	rospy.sleep(5.5)
@@ -223,16 +223,16 @@ def f_achtfahren(roboter):
 def f_turnRight(angle,roboter):
 	turnspeed = -0.5
 	way = (angle * pi * 19)/ 360
-	turntime = way/abs(turnspeed * 10) 
-	f_publish(0,turnspeed,1)
+	turntime = way/abs(turnspeed * 10)
+	f_publish(0,turnspeed,roboter)
 	rospy.sleep(turntime)
 	f_publish(0,0,roboter)
 
 def f_turnLeft(angle,roboter):
 	turnspeed = 0.5
 	way = (angle * pi * 19)/ 360
-	turntime = way/abs(turnspeed * 10) 
-	f_publish(0,turnspeed,1)
+	turntime = way/abs(turnspeed * 10)
+	f_publish(0,turnspeed,roboter)
 	rospy.sleep(turntime)
 	f_publish(0,0,roboter)
 
@@ -241,8 +241,8 @@ def f_drive_cm(way_cm, drive_speed,roboter):
 		drive_speed = 0.5
 	if drive_speed < -0.5:
 		drive_speed = -0.5
-	drive_time = way_cm/abs(drive_speed * 100) 
-	f_publish(drive_speed,0,1)
+	drive_time = way_cm/abs(drive_speed * 100)
+	f_publish(drive_speed,0,roboter)
 	rospy.sleep(drive_time)
 	f_publish(0,0,roboter)
 
@@ -276,39 +276,39 @@ def f_publishData(data):
 
 def f_kugel_find(data):
 	global mission1
-	global mission2 
+	global mission2
 	global mission3
 	arr = data.data
-	sig = arr[0] 
+	sig = arr[0]
 	if mission1 == 0:#rote kugel finden und hinfahren
 		if sig != 2:
-			f_publish(0,0.5,1)
+			f_publish(0,0.5,robot_inuse)
 			rate.sleep()
 		else:
 			f_drive_ball(data,2)
 
 	elif mission2 == 0:#blaue kugel finden
 		if sig != 3:
-			f_publish(0,0.5,1)
+			f_publish(0,0.5,robot_inuse)
 			rate.sleep()
 		else:
 			f_drive_ball(data,3)
 	elif mission3 == 0:# gruene kugel
 		if sig != 4:
-			f_publish(0,0.5,1)
+			f_publish(0,0.5,robot_inuse)
 			rate.sleep()
 		else:
 			f_drive_ball(data,4)
 
 def f_drive_ball(data,sign):
 	global mission1
-	global mission2 
+	global mission2
 	global mission3
 	global speed
 	global maxi
 	global maxturn
 	global turnspeed
-	
+
 	arr = data.data
 	errordis = 0
 	errorturn = 0
@@ -316,7 +316,7 @@ def f_drive_ball(data,sign):
 	#0.00018
 	factorturn = 0.03
 	sig = arr[0] # farbe
-	width = arr[1]			
+	width = arr[1]
 	height = arr[2]
 	acam = width * height #flaeche die erkannt wird
 	x = arr[3]
@@ -336,10 +336,10 @@ def f_drive_ball(data,sign):
 	elif x < 120 :
 		errorturn = 120 - x
 		turnspeed = turnspeed + (errorturn * factorturn)
-	else: 
+	else:
 		turnspeed = 0
 
-	if acam < 4000 and acam > 2700 and x < 170 and x > 130: 
+	if acam < 4000 and acam > 2700 and x < 170 and x > 130:
 		if sign == 2:
 			mission1 = 1
 			print("")
@@ -351,12 +351,12 @@ def f_drive_ball(data,sign):
 			mission3 = 1
 			print("Mission 3 Complete")
 			print("Kommando eingeben: (start/stop/ende/acht/fahren/steuern/tasten/kugelfind):")
-		return	
+		return
 	if speed < -maxi: speed = -maxi
 	if turnspeed < -maxturn: turnspeed = -maxturn
 	if speed > maxi: speed = maxi
 	if turnspeed > maxturn: turnspeed = maxturn
-	f_publish(speed,turnspeed,1)
+	f_publish(speed,turnspeed,robot_inuse)
 	rate.sleep()
 
 ###############################################################################
@@ -367,5 +367,3 @@ if __name__ == '__main__':
 		f_main()
 	except rospy.ROSInterruptException:
 		pass
-
-
