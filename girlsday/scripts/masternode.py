@@ -13,7 +13,7 @@ vel_pub1 = rospy.Publisher('/robot1/cmd_vel',Twist,queue_size = 10)
 info_pub = rospy.Publisher('/info',String,queue_size = 2)
 msg = Twist()
 rospy.init_node('mastertalker', anonymous=True)
-robot_inuse = 1
+robot_inuse = 2
 rate = rospy.Rate(80)
 count = 0
 pi = math.pi

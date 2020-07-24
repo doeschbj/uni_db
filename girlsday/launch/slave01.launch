@@ -1,7 +1,7 @@
 <launch>
   <!--Prefix mit dem der turtlebot gelaunched wird zur steurung mehrerer Turtlebots hilfreich -->
 
-  <arg name="robot" default="robot1"/>
+  <arg name="robot" default="robot2"/>
 
   <include file="$(find girlsday)/launch/robot.launch">
     <arg name="robot" value="$(arg robot)"/>

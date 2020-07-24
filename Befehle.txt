@@ -15,3 +15,27 @@
 robot1 wird immer von teleopkey angesprochen
 
 
+NEU-------------------------------------------
+
+turtlebot:
+	roslaunch girlsday slave01.launch
+	roslaunch girlsday cam01.launch
+remote pc:
+	roslaunch girlsday master01.launch
+	rqt_image_view
+	roslaunch girlsday mastertele01.launch
+
+Schritte:
+	1. turtlebots anmachen
+	2. ssh burger3@192.168.0.104 
+	3. ssh burger2@192.168.107
+	4. burger mit rpi cam: roslaunch girlsday cam01.launch
+	5. burger mit pixy: roslaunch girlsday slave01.launch
+	6. remote desktop:  roslaunch girlsday master01.launch
+	7. remote desktop:  roslaunch girlsday mastertele01.launch
+	8. remote desktop:  rqt_image_view
+
+	9. für laserscan werte: remote desktop: rosrun girlsday scan_values.py
+
+
+
