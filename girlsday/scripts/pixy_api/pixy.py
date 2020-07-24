@@ -158,39 +158,39 @@ def VectorArray_frompointer(t):
     return _pixy.VectorArray_frompointer(t)
 VectorArray_frompointer = _pixy.VectorArray_frompointer
 
-class IntersectionLineArray(_object):
+class IntersectionArray(_object):
     __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, IntersectionLineArray, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, IntersectionArray, name, value)
     __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, IntersectionLineArray, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, IntersectionArray, name)
     __repr__ = _swig_repr
 
     def __init__(self, nelements):
-        this = _pixy.new_IntersectionLineArray(nelements)
+        this = _pixy.new_IntersectionArray(nelements)
         try:
             self.this.append(this)
         except Exception:
             self.this = this
-    __swig_destroy__ = _pixy.delete_IntersectionLineArray
+    __swig_destroy__ = _pixy.delete_IntersectionArray
     __del__ = lambda self: None
 
     def __getitem__(self, index):
-        return _pixy.IntersectionLineArray___getitem__(self, index)
+        return _pixy.IntersectionArray___getitem__(self, index)
 
     def __setitem__(self, index, value):
-        return _pixy.IntersectionLineArray___setitem__(self, index, value)
+        return _pixy.IntersectionArray___setitem__(self, index, value)
 
     def cast(self):
-        return _pixy.IntersectionLineArray_cast(self)
-    __swig_getmethods__["frompointer"] = lambda x: _pixy.IntersectionLineArray_frompointer
+        return _pixy.IntersectionArray_cast(self)
+    __swig_getmethods__["frompointer"] = lambda x: _pixy.IntersectionArray_frompointer
     if _newclass:
-        frompointer = staticmethod(_pixy.IntersectionLineArray_frompointer)
-IntersectionLineArray_swigregister = _pixy.IntersectionLineArray_swigregister
-IntersectionLineArray_swigregister(IntersectionLineArray)
+        frompointer = staticmethod(_pixy.IntersectionArray_frompointer)
+IntersectionArray_swigregister = _pixy.IntersectionArray_swigregister
+IntersectionArray_swigregister(IntersectionArray)
 
-def IntersectionLineArray_frompointer(t):
-    return _pixy.IntersectionLineArray_frompointer(t)
-IntersectionLineArray_frompointer = _pixy.IntersectionLineArray_frompointer
+def IntersectionArray_frompointer(t):
+    return _pixy.IntersectionArray_frompointer(t)
+IntersectionArray_frompointer = _pixy.IntersectionArray_frompointer
 
 class BarcodeArray(_object):
     __swig_setmethods__ = {}
@@ -266,6 +266,10 @@ line_get_vectors = _pixy.line_get_vectors
 def line_get_barcodes(max_barcodes, barcodes):
     return _pixy.line_get_barcodes(max_barcodes, barcodes)
 line_get_barcodes = _pixy.line_get_barcodes
+
+def set_lamp(upper, lower):
+    return _pixy.set_lamp(upper, lower)
+set_lamp = _pixy.set_lamp
 
 def set_servos(S1_Position, S2_Position):
     return _pixy.set_servos(S1_Position, S2_Position)
@@ -395,6 +399,84 @@ class IntersectionLine(_object):
     __del__ = lambda self: None
 IntersectionLine_swigregister = _pixy.IntersectionLine_swigregister
 IntersectionLine_swigregister(IntersectionLine)
+
+class Intersection(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Intersection, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Intersection, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["m_x"] = _pixy.Intersection_m_x_set
+    __swig_getmethods__["m_x"] = _pixy.Intersection_m_x_get
+    if _newclass:
+        m_x = _swig_property(_pixy.Intersection_m_x_get, _pixy.Intersection_m_x_set)
+    __swig_setmethods__["m_y"] = _pixy.Intersection_m_y_set
+    __swig_getmethods__["m_y"] = _pixy.Intersection_m_y_get
+    if _newclass:
+        m_y = _swig_property(_pixy.Intersection_m_y_get, _pixy.Intersection_m_y_set)
+    __swig_setmethods__["m_n"] = _pixy.Intersection_m_n_set
+    __swig_getmethods__["m_n"] = _pixy.Intersection_m_n_get
+    if _newclass:
+        m_n = _swig_property(_pixy.Intersection_m_n_get, _pixy.Intersection_m_n_set)
+    __swig_setmethods__["m_reserved"] = _pixy.Intersection_m_reserved_set
+    __swig_getmethods__["m_reserved"] = _pixy.Intersection_m_reserved_get
+    if _newclass:
+        m_reserved = _swig_property(_pixy.Intersection_m_reserved_get, _pixy.Intersection_m_reserved_set)
+    __swig_setmethods__["m_intLines"] = _pixy.Intersection_m_intLines_set
+    __swig_getmethods__["m_intLines"] = _pixy.Intersection_m_intLines_get
+    if _newclass:
+        m_intLines = _swig_property(_pixy.Intersection_m_intLines_get, _pixy.Intersection_m_intLines_set)
+
+    def getLineIndex(self, i):
+        return _pixy.Intersection_getLineIndex(self, i)
+
+    def getLineAngle(self, i):
+        return _pixy.Intersection_getLineAngle(self, i)
+
+    def __init__(self):
+        this = _pixy.new_Intersection()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _pixy.delete_Intersection
+    __del__ = lambda self: None
+Intersection_swigregister = _pixy.Intersection_swigregister
+Intersection_swigregister(Intersection)
+
+class Barcode(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Barcode, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Barcode, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["m_x"] = _pixy.Barcode_m_x_set
+    __swig_getmethods__["m_x"] = _pixy.Barcode_m_x_get
+    if _newclass:
+        m_x = _swig_property(_pixy.Barcode_m_x_get, _pixy.Barcode_m_x_set)
+    __swig_setmethods__["m_y"] = _pixy.Barcode_m_y_set
+    __swig_getmethods__["m_y"] = _pixy.Barcode_m_y_get
+    if _newclass:
+        m_y = _swig_property(_pixy.Barcode_m_y_get, _pixy.Barcode_m_y_set)
+    __swig_setmethods__["m_flags"] = _pixy.Barcode_m_flags_set
+    __swig_getmethods__["m_flags"] = _pixy.Barcode_m_flags_get
+    if _newclass:
+        m_flags = _swig_property(_pixy.Barcode_m_flags_get, _pixy.Barcode_m_flags_set)
+    __swig_setmethods__["m_code"] = _pixy.Barcode_m_code_set
+    __swig_getmethods__["m_code"] = _pixy.Barcode_m_code_get
+    if _newclass:
+        m_code = _swig_property(_pixy.Barcode_m_code_get, _pixy.Barcode_m_code_set)
+
+    def __init__(self):
+        this = _pixy.new_Barcode()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _pixy.delete_Barcode
+    __del__ = lambda self: None
+Barcode_swigregister = _pixy.Barcode_swigregister
+Barcode_swigregister(Barcode)
 
 # This file is compatible with both classic and new-style classes.
 
