@@ -44,8 +44,8 @@ def main():
 		try:		
 			for i in range(360):
 				if pos[i] > mini and pos[i] < maxi:
-						x = int(-(math.sin(i * math.pi/180) * pos[i]) * 120)
-						y = int((math.cos(i*math.pi/180) * pos[i]) * 120)
+						x = int((-(math.sin(i * math.pi/180) * pos[i]) * 120))
+						y = int(((math.cos(i*math.pi/180) * pos[i]) * 120) )
 						t.goto(x, y)
 						t.down()
 						t.circle(2)
