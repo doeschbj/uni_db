@@ -37,7 +37,7 @@ def main():
 	t.circle(10)
 	t.up()
 	rospy.init_node('scan_values')
-	sub = rospy.Subscriber('/robot3/scan',LaserScan,callback)
+	sub = rospy.Subscriber('/robot1/scan',LaserScan,callback)
 	while not rospy.is_shutdown():
 		while not lock.acquire():
 			pass

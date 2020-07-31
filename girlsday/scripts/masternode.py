@@ -9,6 +9,7 @@ from std_msgs.msg import Int32MultiArray
 from std_msgs.msg import String
 
 vel_pub3 = rospy.Publisher('/robot3/cmd_vel',Twist,queue_size = 10)
+vel_pub2 = rospy.Publisher('/robot2/cmd_vel',Twist,queue_size = 10)
 vel_pub1 = rospy.Publisher('/robot1/cmd_vel',Twist,queue_size = 10)
 info_pub = rospy.Publisher('/info',String,queue_size = 2)
 msg = Twist()
@@ -120,6 +121,7 @@ def getBlocks(data):
 	global maxi
 	global maxturn
 	global turnspeed
+	global robot_inuse
 
 	arr = data.data
 	errordis = 0
@@ -163,7 +165,7 @@ def getBlocks(data):
 			if turnspeed < -maxturn: turnspeed = -maxturn
 			if speed > maxi: speed = maxi
 			if turnspeed > maxturn: turnspeed = maxturn
-			f_publish(speed,turnspeed,1)
+			f_publish(speed,turnspeed,robot_inuse)
 			rate.sleep()
 		elif count < 10:
 			count = count +1
@@ -258,7 +260,7 @@ def f_publish(xspeed, zturnspeed,roboter):
 		if roboter== 1:
 			vel_pub1.publish(msg)
 		elif roboter==2:
-			pass#wird noch nicht benoetigt
+			vel_pub2.publish(msg)
 		elif roboter==3:
 			vel_pub3.publish(msg)
 	except KeyboardInterrupt:

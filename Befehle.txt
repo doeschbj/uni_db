@@ -27,15 +27,16 @@ remote pc:
 
 Schritte:
 	1. turtlebots anmachen
-	2. ssh burger3@192.168.0.104 
+	2. ssh burger3@192.168.0.104 (mit pixy cam)
 	3. ssh burger2@192.168.107
-	4. burger mit rpi cam: roslaunch girlsday cam01.launch
+	4. remote desktop:  roslaunch girlsday master01.launch
 	5. burger mit pixy: roslaunch girlsday slave01.launch
-	6. remote desktop:  roslaunch girlsday master01.launch
+	6. burger mit rpi cam: roslaunch girlsday cam01.launch
 	7. remote desktop:  roslaunch girlsday mastertele01.launch
 	8. remote desktop:  rqt_image_view
 
-	9. für laserscan werte: remote desktop: rosrun girlsday scan_values.py
+	9. //für laserscan werte: remote desktop: rosrun girlsday scan_values.py//
+	als ersatz in workspace und mit python scan_values auführen
 
 
 
