@@ -1,5 +1,5 @@
 <launch>
+	<node pkg="girlsday" name="mastertalker" type="masternode.py" output="screen">
 
-
-
+  	</node>
 </launch>

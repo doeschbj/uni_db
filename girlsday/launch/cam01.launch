@@ -1,4 +1,6 @@
 <launch>
-	<include file="(find turtlebot3_bringup)/launch/turtlebot3_rpi_camera.launch">
+	<include file="$(find girlsday)/launch/robot.launch">
+	</include>
+	<include file="$(find turtlebot3_bringup)/launch/turtlebot3_rpicamera.launch">
 	</include>
 </launch>

@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 import sys, os, time
-sys.path.insert(0, "~/catkin_ws/src/uni_db/02_Robos/pixy_api/")
+sys.path.insert(0, "~/catkin_ws/src/uni_db/girlsday/scripts/pixy_api/")
 import rospy
 import math
 from ctypes import *
@@ -49,9 +49,8 @@ def f_main():
 
 def f_init():
 	print("Blocks started")
-	pixy.init ()
-	pixy.change_prog ("color_connected_components")
-
+	pixy.init()
+	pixy.change_prog("color_connected_components")
 	print("Initialized")
 
 def f_getBlocks():
