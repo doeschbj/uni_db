@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Turtlebot Workstation</title>
+  <link rel="stylesheet" href="buttonstyle.css">
+  <link rel="stylesheet" href="buttonstop.css">
+</head>
+<body>
+  <h1 align="center">Produktionsanlage</h1>
+
+  <main>
+    <table align="center">
+      <tr><td><button type="button" class="styled" id="start_auto">Lego Auto</button></td>
+        <td><button type="button" class="styled" id="start_lkw">Lego Lkw</button></td>
+        <td><button type="button" class="stylestop" id="stop">Stop</button></td></tr>
+      <tr><td><button type="button" class="styled" id="start_motor">Lego Motorrad</button></td>
+        <td><button type="button" class="styled" id="start_nothing">Lego Nothing</button></td></tr>
+    </table><br>
+<form align="center" style=" width:400px; margin:auto;">
+    <label id="status"><b>Status:   </b></label>
+    <label id="status_field">Inaktiv</label><br>
+    <label id="status_t1"><b>Status Turtlebot 1:   </b></label><br>
+    <label id="status_t2"><b>Status Turtlebot 2:   </b></label><br>
+    <label id="status_t3"><b >Status Turtlebot 3:   </b></label><br>
+</form>
+  </main>
+  <script src="buttonlistener.js"></script>
+</body>
+</html>
