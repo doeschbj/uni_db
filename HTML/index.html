@@ -5,26 +5,58 @@
   <title>Turtlebot Workstation</title>
   <link rel="stylesheet" href="buttonstyle.css">
   <link rel="stylesheet" href="buttonstop.css">
+  <link rel="stylesheet" href="liststyle.css">
 </head>
 <body>
   <h1 align="center">Produktionsanlage</h1>
 
   <main>
     <table align="center">
-      <tr><td><button type="button" class="styled" id="start_auto">Lego Auto</button></td>
-        <td><button type="button" class="styled" id="start_lkw">Lego Lkw</button></td>
+      <tr><td><button type="button" class="styled" id="start_auto">Auto</button></td>
+        <td><button type="button" class="styled" id="start_lkw">Lkw</button></td>
         <td><button type="button" class="stylestop" id="stop">Stop</button></td></tr>
-      <tr><td><button type="button" class="styled" id="start_motor">Lego Motorrad</button></td>
-        <td><button type="button" class="styled" id="start_nothing">Lego Nothing</button></td></tr>
+      <tr><td><button type="button" class="styled" id="start_motor">Motorrad</button></td>
+        <td><button type="button" class="styled" id="start_anhanger">Anhänger</button></td></tr>
     </table><br>
-<form align="center" style=" width:400px; margin:auto;">
-    <label id="status"><b>Status:   </b></label>
-    <label id="status_field">Inaktiv</label><br>
-    <label id="status_t1"><b>Status Turtlebot 1:   </b></label><br>
-    <label id="status_t2"><b>Status Turtlebot 2:   </b></label><br>
-    <label id="status_t3"><b >Status Turtlebot 3:   </b></label><br>
-</form>
+
+<table align="center">
+  <tr>
+    <td>
+        <form align="left" style=" width:400px; margin:auto;">
+          <table>
+            <tr><td><label id="status_t1"><b>Status Turtlebot 1:   </b></label></td><td><label id="status_t1_tf">Inaktiv</label></td></tr>
+            <tr><td><label id="status_t2"><b>Status Turtlebot 2:   </b></label></td><td><label id="status_t2_tf">Inaktiv</label></td></tr>
+            <tr><td><label id="status_t3"><b>Status Turtlebot 3:   </b></label></td><td><label id="status_t3_tf">Inaktiv</label></td></tr>
+          </table>
+        </form>
+    </td>
+    <td>
+      <form style=" width:400px; margin:auto;">
+        <label id="status"><b>Status:   </b></label>
+        <label id="status_field">Inaktiv</label><br>
+      </form>
+    </td>
+    <td>
+      <button type="button" class="stylestop" id="save_list">Save</button>
+    </td>
+    <td><button type="button" class="stylestop" id="rmv_list">Remove</button></td>
+  </tr>
+  <tr>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+      <nav>
+      <ul id="auftragsliste">
+      </ul>
+    </nav>
+    </td>
+  </tr>
+</table>
   </main>
+  <script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script src="buttonlistener.js"></script>
+  <script src="list.js"></script>
 </body>
 </html>
