@@ -1,0 +1,18 @@
+<launch>
+
+    <arg name="robot_number" default="$(env ROBOT_NUMBER)" doc="robot number  [1 = waffle, 2 = picam, 3 = pixycam]"/>
+
+   <include file="$(find ppp)/launch/robot.launch">
+        <arg name="robot" value="robot$(arg robot_number)"/>
+    </include>
+
+    <!-- if robot number == 2-->
+    <include file="$(find turtlebot3_bringup)/launch/turtlebot3_rpicamera.launch" if="$(eval robot_number == '2')">
+	</include>
+    
+    <node pkg="ppp" name="ppp_node_$(arg robot_number)" type="ppp_node" output="screen">
+        
+    </node>
+
+
+</launch>

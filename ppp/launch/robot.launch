@@ -1,6 +1,6 @@
 <launch>
-  
-  <arg name="robot" default="robot1"/>
+  <arg name="robot_number" default="$(env ROBOT_NUMBER)" doc="robot number  [1 = waffle, 2 = picam, 3 = pixycam]"/>
+  <arg name="robot" default="robot$(arg robot_number)"/>
   <!-- No namespace here as we will share this description.
        Access with slash at the beginning -->
   <param name="robot_description"

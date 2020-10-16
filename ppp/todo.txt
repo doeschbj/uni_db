@@ -1,0 +1,6 @@
+-publisher auf /robot/status
+- subscriber /robot/status
+- muss für jeden roboter eine variable mitführen
+
+- warte schleifen für stationen hinzufügen
+- subscriber für jeweiligen roboter mit robo anmen aus parameter server
