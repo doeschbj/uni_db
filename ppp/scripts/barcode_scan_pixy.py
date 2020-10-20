@@ -6,14 +6,7 @@ import math
 from ctypes import *
 from pixy_api import pixy
 from pixy_api.pixy import *
-
-while 1:
-    line_get_main_features()
-    b_count = line_get_barcodes(100, barcodes)
-    if b_count > 0:
-        for index in range (0, b_count):
-            print(Barcode)
-            print(barcodes[index].m_code)
+from ppp.srv import barcode, barcodeResponse
 
 def f_handle_barcode(req):
     code = readCam()
