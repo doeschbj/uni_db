@@ -14,27 +14,14 @@ def f_handle_barcode(req):
 
 
 def readCam():
-    old = 0
-    i = 0
-    while i < 1:
         barcodes = BarcodeArray(100)
         frame = 0
         line_get_main_features()
         b_count = line_get_barcodes(100, barcodes)
         if b_count > 0:
             code = barcodes[0].m_code
-            if code == old:
-                i = i + 1
-            else:
-                old = code
-                i = 1
         else:
             code = -1
-            if code == old:
-                i = i + 1
-            else:
-                old = code
-                i = 0
 
     return code
 
