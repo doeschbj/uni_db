@@ -29,6 +29,19 @@ int main(int argc, char *argv[])
 void startScan(std_msgs::Int32 msg){
     int data = msg.data;
     if(data == 1){
+        switch(robot_nmbr){
+            case 1:
+                //noch nichts
+                break;
+            case 2:
+                //Pi   
+                break;
+            case 3:
+                //Pixy
+                break;
+            default:
+                break;
+        }
         //startScanQr
         //mit drehen rechts links usw
         //unterscheide hier roboter
