@@ -45,7 +45,7 @@ def f_main():
     rospy.init_node('barcode_pi', anonymous=True)
     rate = rospy.Rate(60) # 20hzgle_lamp()
     f_init()
-    s = rospy.Service('barcode_read_pi', ReadBarcode, f_handle_barcode)
+    s = rospy.Service('barcode_read_pi', barcode, f_handle_barcode)
     rospy.spin()
 
 def f_init():

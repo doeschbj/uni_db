@@ -42,7 +42,7 @@ def f_main():
     rospy.init_node('barcode_pixy', anonymous=True)
     rate = rospy.Rate(60)
     f_init()
-    s = rospy.Service('barcode_read_pixy', ReadBarcodePixy, f_handle_barcode)
+    s = rospy.Service('barcode_read_pixy', barcode, f_handle_barcode)
     rospy.spin()
 
 def f_init():
