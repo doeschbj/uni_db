@@ -4,6 +4,7 @@
 #include <iostream> 
 #include <string>
 #include <regex>
+#include "ppp/barcode.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,7 +12,7 @@ int main(int argc, char *argv[])
     ros::NodeHandle n;
     if(!getParams(n)){return -1;}
     ROS_INFO("Robot number = %d", robot_nmbr);
-    for(int i = 0; i < robot_nmbr; i++){
+    for(int i = 0; i < amofbots; i++){
         status.push_back(0);
     }
     std::stringstream ss;
@@ -20,10 +21,63 @@ int main(int argc, char *argv[])
     status_sub = n.subscribe("/robot/status", 100, updateStatus);
     scanQR = n.subscribe("/robot"+ss.str()+"/scanQR", 100, startScan);
 
+    if(robot_nmbr == 2){
+        client_pi = n.serviceClient<ppp::barcode>("barcode_read_pi");
+    }else if(robot_nmbr == 3){
+        client_pixy = n.serviceClient<ppp::barcode>("barcode_read_pixy");
+    }
+    initSleep();
 
     ros::AsyncSpinner spinner(6); // Use 3 threads
     spinner.start();
     return 0;
+}
+
+void callPi(){
+    ppp::barcode srv;
+    srv.request.start = 1;
+    int res = -1;
+    int count = 0;
+    do{
+        if (!client_pi.call(srv)){
+            ROS_ERROR("Failed to call service barcode_read_pi");
+            return;
+        }else{
+            res = srv.response.result;
+        }
+        count++;
+    }while(res < 0 && count < 20);
+    wait_at_station(res);
+}
+
+void callPixy(){
+    ppp::barcode srv;
+    srv.request.start = 1;
+    int res = -1;
+    int count = 0;
+    do{
+        if (!client_pixy.call(srv)){
+            ROS_ERROR("Failed to call service barcode_read_pixy");
+            return;
+        }else{
+            res = srv.response.result;
+        }
+        count++;
+    }while(res < 0 && count < 20);
+    wait_at_station(res);
+}
+
+void wait_at_station(int res){
+    if(res < 0){
+        ROS_ERROR("Cannot find code");
+    }
+    status[robot_nmbr -1] = (res * 10 + 1);
+    publishStatus();
+
+    ros::Duration(sleeptime[res]).sleep();
+
+    status[robot_nmbr -1] = (res * 10);
+    publishStatus();
 }
 
 void startScan(std_msgs::Int32 msg){
@@ -34,10 +88,10 @@ void startScan(std_msgs::Int32 msg){
                 //noch nichts
                 break;
             case 2:
-                //Pi   
+                callPi(); 
                 break;
             case 3:
-                //Pixy
+                callPixy();
                 break;
             default:
                 break;
@@ -55,7 +109,7 @@ void startScan(std_msgs::Int32 msg){
 bool getParams(ros::NodeHandle n){
     node_name = ros::this_node::getName();
     extractIntegerWords(node_name);
-    if(!(n.getParam("/HeadController/num_robots", robot_nmbr))){
+    if(!(n.getParam("/HeadController/num_robots", amofbots))){
         ROS_ERROR("Could not get number of robots");
         return false;
     }
@@ -82,4 +136,10 @@ void updateStatus(std_msgs::Int32MultiArray msg){
     status_mutex.lock();
     status = msg.data;
     status_mutex.unlock();
+}
+
+void initSleep(){
+    for(int i = 0; i < 10; i++){
+        sleeptime.push_back(5.0);
+    }
 }

@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="ppp" name="barcode_pi" type="barcode_scan.py" output="screen">
+</launch>

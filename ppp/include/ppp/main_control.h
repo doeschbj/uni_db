@@ -7,6 +7,7 @@
 #include <mutex>
 #include "std_msgs/Int32.h"
 
+
 int robot_nmbr = -1;
 int amofbots = -1;
 std::vector<int> status;
@@ -15,10 +16,17 @@ ros::Publisher status_pub;
 ros::Subscriber status_sub;
 ros::Subscriber scanQR;
 std::mutex status_mutex;
+ros::ServiceClient  client_pi;
+ros::ServiceClient  client_pixy;
+std::vector<double> sleeptime;
 
 bool getParams(ros::NodeHandle n);
 void extractIntegerWords(std::string str);
 void publishStatus();
 void updateStatus(std_msgs::Int32MultiArray msg);
 void startScan(std_msgs::Int32 msg);
+void callPi();
+void callPixy();
+void wait_at_station(int res);
+void initSleep();
 #endif
