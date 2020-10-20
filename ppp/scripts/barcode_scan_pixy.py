@@ -22,6 +22,7 @@ def readCam():
         line_get_main_features()
         b_count = line_get_barcodes(100, barcodes)
         if b_count > 0:
+            print("Found")
             code = barcodes[0].m_code
             if code == old:
                 i = i + 1
@@ -29,6 +30,7 @@ def readCam():
                 old = code
                 i = 0
         else:
+            print("not found")
             code = -1
             if code == old:
                 i = i + 1
