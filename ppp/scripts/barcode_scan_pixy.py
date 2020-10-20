@@ -27,7 +27,7 @@ def readCam():
                 i = i + 1
             else:
                 old = code
-                i = 0
+                i = 1
         else:
             code = -1
             if code == old:
