@@ -48,6 +48,7 @@ void callPi(){
         count++;
     }while(res < 0 && count < 20);
     wait_at_station(res);
+    //evtl drehen hinzufügen bei keinem erkannten code
 }
 
 void callPixy(){
@@ -68,6 +69,10 @@ void callPixy(){
 }
 
 void wait_at_station(int res){
+
+    //erkenne station warte festgelegten wert evtl neu 
+    //kalibrieen während warten.
+    //publishb einmal 51 für wartn und 50 ende warten
     if(res < 0){
         ROS_ERROR("Cannot find code");
     }
@@ -96,13 +101,6 @@ void startScan(std_msgs::Int32 msg){
             default:
                 break;
         }
-        //startScanQr
-        //mit drehen rechts links usw
-        //unterscheide hier roboter
-        //roboter -1
-        //erkenne station warte festgelegten wert evtl neu 
-        //kalibrieen während warten.
-        //publishb einmal 51 für wartn und 50 ende warten
     }
 }
 
