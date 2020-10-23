@@ -1,4 +1,5 @@
-# import packages
+#! /usr/bin/env python
+
 import cv2
 import rospy
 from pyzbar import pyzbar
