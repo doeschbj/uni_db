@@ -24,7 +24,7 @@ def readCam():
         frame = imutils.resize(frame, width=400)
         barcodes = pyzbar.decode(frame)
 
-        if barcodes.size() > 0:
+        if barcodes.length() > 0:
             code = barcode.data.decode("utf-8")
             if code == old:
                 i = i + 1
