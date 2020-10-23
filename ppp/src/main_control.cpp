@@ -137,6 +137,7 @@ void updateStatus(std_msgs::Int32MultiArray msg){
 }
 
 void initSleep(){
+    //Wielang die roboter an welcher station warten müssen
     for(int i = 0; i < 10; i++){
         sleeptime.push_back(5.0);
     }
