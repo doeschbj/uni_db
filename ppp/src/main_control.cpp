@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     ROS_INFO("------------------------");
     ros::AsyncSpinner spinner(6); // Use 3 threads
     spinner.start();
+    ros::waitForShutdown();
     return 0;
 }
 
