@@ -34,7 +34,7 @@ def f_main():
 def f_init():
     pixy.init()
     pixy.change_prog("line")
-    print("Initialized")
+    print("Pixy Initialized")
 
 if __name__ == '__main__':
 	try:

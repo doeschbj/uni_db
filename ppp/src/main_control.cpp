@@ -68,7 +68,7 @@ void callPixy(){
         }
         count++;
         ros::Duration(0.1).sleep();
-    }while(res < 0 && count < 20);
+    }while(res < 0 && count < 50);
     wait_at_station(res);
 }
 
