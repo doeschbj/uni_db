@@ -22,8 +22,7 @@ def readCam():
             code = barcodes[0].m_code
         else:
             code = -1
-
-    return code
+        return code
 
 def f_main():
     rospy.init_node('barcode_pixy', anonymous=True)
