@@ -50,7 +50,7 @@ def f_main():
     rospy.spin()
 
 def f_init():
-	print("Initialized")
+	print("Initialized QR SCAN")
 
 if __name__ == '__main__':
 	try:
