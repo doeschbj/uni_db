@@ -27,7 +27,9 @@ int main(int argc, char *argv[])
         client_pixy = n.serviceClient<ppp::barcode>("barcode_read_pixy");
     }
     initSleep();
-
+    ROS_INFO("------------------------");
+    ROS_INFO("------------Init--------");
+    ROS_INFO("------------------------");
     ros::AsyncSpinner spinner(6); // Use 3 threads
     spinner.start();
     return 0;

@@ -9,6 +9,7 @@
     <!-- if robot number == 2-->
     <include file="$(find turtlebot3_bringup)/launch/turtlebot3_rpicamera.launch" if="$(eval robot_number == '2')">
 	</include>
+    
     <include file="$(find ppp)/launch/barcodepi.launch" if="$(eval robot_number == '2')">
 	</include>
 
