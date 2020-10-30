@@ -49,7 +49,7 @@ void callPi(){
             res = srv.response.result;
         }
         count++;
-    }while(res < 0 && count < 20);
+    }while(res < 0 && count < 50);
     wait_at_station(res);
     //evtl drehen hinzufügen bei keinem erkannten code
 }
@@ -67,6 +67,7 @@ void callPixy(){
             res = srv.response.result;
         }
         count++;
+        ros::Duration(0.1).sleep();
     }while(res < 0 && count < 20);
     wait_at_station(res);
 }
@@ -78,15 +79,19 @@ void wait_at_station(int res){
     //publishb einmal 51 für wartn und 50 ende warten
     if(res < 0){
         ROS_ERROR("Cannot find code");
+        status[robot_nmbr -1] = 0;
+        publishStatus();
+    }else{
+        status[robot_nmbr -1] = (res * 10 + 1);
+        publishStatus();
+
+        ros::Duration(sleeptime[res]).sleep();
+
+        status[robot_nmbr -1] = (res * 10);
+        publishStatus();
+        ROS_INFO("Finished task");
     }
-    status[robot_nmbr -1] = (res * 10 + 1);
-    publishStatus();
-
-    ros::Duration(sleeptime[res]).sleep();
-
-    status[robot_nmbr -1] = (res * 10);
-    publishStatus();
-    ROS_INFO("Finished task");
+    
 }
 
 void startScan(std_msgs::Int32 msg){
