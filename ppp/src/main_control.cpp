@@ -86,11 +86,13 @@ void wait_at_station(int res){
 
     status[robot_nmbr -1] = (res * 10);
     publishStatus();
+    ROS_INFO("Finished task");
 }
 
 void startScan(std_msgs::Int32 msg){
     int data = msg.data;
     if(data == 1){
+        ROS_INFO("Start Scan");
         switch(robot_nmbr){
             case 1:
                 //noch nichts
