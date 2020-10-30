@@ -10,10 +10,10 @@
     <!--<include file="$(find turtlebot3_bringup)/launch/turtlebot3_rpicamera.launch" if="$(eval robot_number == '2')">
 	</include>-->
     
-    <include file="$(find ppp)/launch/barcodepi.launch" if="$(eval arg('robot_number')== '2')">
+    <include file="$(find ppp)/launch/barcodepi.launch" if="$(eval arg('robot_number')== 2)">
 	</include>
 
-    <include file="$(find ppp)/launch/barcodepixy.launch" if="$(eval arg('robot_number')== '3')">
+    <include file="$(find ppp)/launch/barcodepixy.launch" if="$(eval arg('robot_number')==3)">
 	</include>
     
     <node pkg="ppp" name="ppp_node_$(arg robot_number)" type="ppp_node" output="screen">
